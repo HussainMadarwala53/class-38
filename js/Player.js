@@ -19,6 +19,15 @@ class Player {
       name: this.name,
       positionX: this.positionX,
       positionY: this.positionY
+getDistance(){
+    var playerDistanceRef = database.ref('players/player'+ this.index);
+    playerDistanceRef.on('value',data =>{
+var data = data.val();
+      this.positionX = data.positionX;
+      this.positionY = data.positionY;
+    })
+    
+  }
     });
   }
 
@@ -29,6 +38,12 @@ class Player {
     });
   }
 
+updateCount(count) {
+    database.ref("/").update({
+      playerCount: count
+
+    });
+  }
   update(){
     var playerIndex = 'players/player'+ this.index
     database.ref(playerIndex).update({
@@ -36,12 +51,7 @@ class Player {
       positionY:this.positionY
     })
   }
-  updateCount(count) {
-    database.ref("/").update({
-      playerCount: count
-    });
-  }
-
+  
   static getPlayersInfo() {
     var playerInfoRef = database.ref("players");
     playerInfoRef.on("value", data => {
@@ -49,12 +59,5 @@ class Player {
     });
   }
 
-  getDistance(){
-    var playerDistanceRef = database.ref('players/player'+ this.index);
-    playerDistanceRef.on('value',data =>{
-      this.positionX = data.positionX;
-      this.positionY = data.positionY;
-    })
-    
-  }
+  
 }
